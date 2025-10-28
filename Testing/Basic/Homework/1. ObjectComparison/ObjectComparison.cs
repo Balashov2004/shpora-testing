@@ -16,13 +16,16 @@ public class ObjectComparison
             new Person("Vasili III of Russia", 28, 170, 60, null));
 
         // Перепишите код на использование Fluent Assertions.
-        
-        actualTsar.Should().BeEquivalentTo(expectedTsar, options => options
-            .Excluding(tsar => tsar.Id)
-            .Excluding(tsar => tsar.Parent!.Id));
+
+        actualTsar
+            .Should()
+            .BeEquivalentTo(expectedTsar, options => options
+                .Excluding(info => info.Path.EndsWith(".Id") || info.Path == "Id")
+            );
         // Мы заменили 8 строчек тестов одной, так же если параметры класса Person поменяются в будущем нам не потребуется писать доп тесты,
         // потому что FluentAssertions сравнивает все свойства,
         // через Excluding мы исключили параметр id, чтобы тест не падал
+        
     }
 
     [Test]
